@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdyy.springboot.oa_xiaohu.mappers.UserMapper">
+    <resultMap id="BaseMap" type="users">
+        <id column="USER_ID" property="userId" />
+        <result column="USER_NAME" property="userName"></result>
+        <result column="PASSWORD" property="password"></result>
+        <result column="EMAIL" property="email"></result>
+        <result column="PHONE" property="phone"></result>
+    </resultMap>
+   <insert id="addUser" parameterType="users">
+       INSERT INTO
+            USERS
+                (USER_ID,USER_NAME,PASSWORD,EMAIL,PHONE,LOGIN_TIME)
+            VALUES
+                (#{userId},#{userName},#{password},#{email},#{phone},#{loginTime})
+   </insert>
+
+    <select id="findUseByUsername" parameterType="map" resultType="users">
+        SELECT
+               *
+         FROM
+            USERS
+         WHERE
+             1=1
+        <if test="username != null ">
+         AND   USER_NAME = #{username}
+        </if>
+        <if test="pssword != null">
+            AND PASSWORD = #{password}
+        </if>
+        <if test="email != null">
+            AND  EMAIL = #{email}
+        </if>
+        <if test="phone != null">
+            AND PHONE = #{phone}
+        </if>
+
+    </select>
+
+    <update id="updateByUser" parameterType="map">
+        UPDATE
+            USERS
+          <set>
+              <if test="username != null">
+                  USER_NAME = #{username}
+              </if>
+              <if test="password != null">
+                  PASSWORD =#{password}
+              </if>
+              <if test="loginTime != null">
+                  LOGIN_TIME =#{loginTime}
+              </if>
+            WHERE
+                 EMAIL = #{email}
+          </set>
+    </update>
+</mapper>
