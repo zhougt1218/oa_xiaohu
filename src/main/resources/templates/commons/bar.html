@@ -226,7 +226,7 @@
 
        <ul class="nav nav-list">
            <li class="active">
-               <a href="index.html" th:href="@{/index}">
+               <a href="main.html" th:href="@{/main.html}">
                    <i class="icon-dashboard"></i>
                    <span>仪表板</span>
                </a>
@@ -277,7 +277,7 @@
                </a>
            </li>
 
-           <li>
+           <li th:class="${activeUri == '@{/calendar}'?'active':''}">
                <a href="calendar.html" th:href="@{/calendar}">
                    <i class="icon-calendar"></i>
                    <span>日历</span>
@@ -356,4 +356,13 @@
        </div>
    </div><!--/#ace-settings-container-->
 </body>
+<script type="text/javascript">
+    $(function(){
+        var li = $('.nav-list').children('li');
+        for(var i= 0;i<li.length;i++){
+            var url = window.location.pathname;
+            console.log(url);
+        }
+    });
+</script>
 </html>
