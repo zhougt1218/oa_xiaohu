@@ -28,4 +28,10 @@ public class UserServiceImpl implements UserService {
         Users user = mapper.findUseByUsername(paraMap);
         return user;
     }
+
+    @Override
+    public int updateByUser(Map paraMap) {
+        int count = mapper.updateByUser(paraMap);
+        return count;
+    }
 }

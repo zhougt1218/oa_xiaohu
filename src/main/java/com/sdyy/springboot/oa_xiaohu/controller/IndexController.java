@@ -1,6 +1,4 @@
 package com.sdyy.springboot.oa_xiaohu.controller;
-
-import com.sdyy.springboot.oa_xiaohu.beans.JsonResult;
 import com.sdyy.springboot.oa_xiaohu.beans.Users;
 import com.sdyy.springboot.oa_xiaohu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -38,44 +35,55 @@ public class IndexController {
     @Value("${spring.mail.username}")
     private String serviceName;
 
-    @GetMapping(value = "/login")
-    public String login(){
-        return "login";
-    }
+//    @GetMapping(value = "/login")
+//    public String login(){
+//        return "login";
+//    }
 
-    @PostMapping("/index")
-    public String index(@RequestParam String username, @RequestParam String password, Model model, HttpSession session){
+    @PostMapping("/login")
+    @ResponseBody
+     public String index(@RequestParam String username,@RequestParam String password,@RequestParam boolean isRememberme,
+                         @RequestParam String logintime, Model model,HttpSession session){
+        Integer count = 0;
         Map<String,String> paraMap = new HashMap<String,String>();
         paraMap.put("username",username);
         paraMap.put("password",password);
         System.out.println(paraMap);
            Users user = userService.findUseByUsername(paraMap);
-           if(user == null){
-              model.addAttribute("msg","用户名密码错误！！");
-               return "/login";
+        System.out.println(user);
+           if(user == null || StringUtils.isEmpty(user)){
+               System.out.println("用户不存在"+Integer.toString(count));
+               return Integer.toString(count);
            }else{
+               System.out.println("用户存在"+Integer.toString(count));
+               paraMap.clear();
+               paraMap.put("logintime",logintime);
+               paraMap.put("userId",user.getUserId());
+                count = userService.updateByUser(paraMap);
                session.setAttribute("user",user);
-               return "index";
+               return Integer.toString(count);
            }
     }
 
     @PostMapping("/register")
     @ResponseBody
     public String register(@RequestParam String username, @RequestParam String password, @RequestParam String email,
-                            @RequestParam String phone, @RequestParam String loginTime, @RequestParam  Boolean isChecked, Model model){
+                            @RequestParam String phone, @RequestParam String loginTime, @RequestParam String registTime,
+                           @RequestParam  Boolean isChecked, Model model){
         System.out.println(username+password);
+        Integer count =0;
      if(isChecked){
-        Users user = new Users(username,password,email,phone,loginTime);
+        Users user = new Users(username,password,email,phone,loginTime,registTime);
         user.setUserId(UUID.randomUUID().toString());
         System.out.println(user);
-        int count = userService.addUser(user);
-
-        return   new JsonResult(200,"ok",user,isChecked).toString();
+         count = userService.addUser(user);
+        return  Integer.toString(count);
 
      }else{
-          return new JsonResult(400,"error",isChecked).toString();
+         model.addAttribute("msg","注册失败，请重新注册");
+          return Integer.toString(count);
      }
-    }
+   }
 
     @PostMapping("/email")
     public String email(@RequestParam String email, @RequestParam String phone,Model model){
@@ -113,7 +121,7 @@ public class IndexController {
        model.addAttribute("msg","用户不存在，请重新注册");
    }
 
-        return "login";
+        return "index";
     }
 
     @GetMapping("/service")
@@ -125,6 +133,6 @@ public class IndexController {
     public String check(HttpServletRequest request){
         String email = request.getParameter("email");
         System.out.println(email);
-        return "login";
+        return "index";
     }
 }

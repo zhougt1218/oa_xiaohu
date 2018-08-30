@@ -11,9 +11,9 @@
    <insert id="addUser" parameterType="users">
        INSERT INTO
             USERS
-                (USER_ID,USER_NAME,PASSWORD,EMAIL,PHONE,LOGIN_TIME)
+                (USER_ID,USER_NAME,PASSWORD,EMAIL,PHONE,LOGIN_TIME,REGIST_TIME )
             VALUES
-                (#{userId},#{userName},#{password},#{email},#{phone},#{loginTime})
+                (#{userId},#{userName},#{password},#{email},#{phone},#{loginTime},#{registTime})
    </insert>
 
     <select id="findUseByUsername" parameterType="map" resultType="users">
@@ -26,7 +26,7 @@
         <if test="username != null ">
          AND   USER_NAME = #{username}
         </if>
-        <if test="pssword != null">
+        <if test="password != null">
             AND PASSWORD = #{password}
         </if>
         <if test="email != null">
@@ -48,11 +48,11 @@
               <if test="password != null">
                   PASSWORD =#{password}
               </if>
-              <if test="loginTime != null">
-                  LOGIN_TIME =#{loginTime}
+              <if test="logintime != null">
+                  LOGIN_TIME =#{logintime}
               </if>
             WHERE
-                 EMAIL = #{email}
+                 USER_ID = #{userId}
           </set>
     </update>
 </mapper>

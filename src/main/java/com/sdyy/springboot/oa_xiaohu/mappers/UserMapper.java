@@ -17,4 +17,7 @@ public interface UserMapper {
     //查找用户，验证用户
     public Users findUseByUsername(Map paraMap);
 
+    //更新用户信息
+    public int updateByUser(Map paraMap);
+
 }

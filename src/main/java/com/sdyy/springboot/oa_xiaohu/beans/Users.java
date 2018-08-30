@@ -1,9 +1,5 @@
 package com.sdyy.springboot.oa_xiaohu.beans;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Date;
-
 /**
  * @author xiaohu
  * @createDate 2018-08-25 9:31
@@ -15,6 +11,7 @@ public class Users {
     private String email;
     private String phone;
     private String loginTime;
+    private String registTime;
 
     public String getUserId() {
         return userId;
@@ -64,6 +61,14 @@ public class Users {
         this.loginTime = loginTime;
     }
 
+    public String getRegistTime() {
+        return registTime;
+    }
+
+    public void setRegistTime(String registTime) {
+        this.registTime = registTime;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
@@ -73,15 +78,17 @@ public class Users {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", loginTime='" + loginTime + '\'' +
+                ", registTime='" + registTime + '\'' +
                 '}';
     }
 
-    public Users(String userName, String password, String email, String phone, String loginTime) {
+    public Users(String userName, String password, String email, String phone, String loginTime, String registTime) {
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.loginTime = loginTime;
+        this.registTime = registTime;
     }
 
     public Users(){}
